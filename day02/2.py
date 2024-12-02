@@ -1,14 +1,14 @@
 import sys
 
 
-def is_safe(report: list[int], tolerate: int = 1) -> bool:
+def is_safe(report: list[int], tolerate: bool = True) -> bool:
     diffs = [a - b for a, b in zip(report, report[1:])]
     if is_strictly_monotone(diffs) and is_gradual(diffs):
         return True
-    if tolerate > 0:
+    if tolerate:
         for i in range(len(report)):
             subreport = report[:i] + report[i + 1:]
-            if is_safe(subreport, tolerate=tolerate - 1):
+            if is_safe(subreport, tolerate=False):
                 return True
     return False
 
