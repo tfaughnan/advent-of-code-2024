@@ -11,14 +11,7 @@ def is_correctly_ordered(rules: defaultdict[int, list[int]], update: list[int]) 
     return True
 
 def cmp_with_rules(rules: defaultdict[int, list[int]]) -> Callable[[int, int], int]:
-    def cmp(x: int, y: int) -> int:
-        if x in rules[y]:
-            return 1
-        elif y in rules[x]:
-            return -1
-        return 0
-
-    return cmp
+    return lambda x, y: 1 if x in rules[y] else (-1 if y in rules[x] else 0)
 
 rules_input, updates_input = sys.stdin.read().split('\n\n')
 rules = defaultdict[int, list[int]](list)
