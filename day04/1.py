@@ -1,27 +1,25 @@
 import sys
 
 DIRECTIONS = (
-    ((0, -3), (0, -2), (0, -1), (0, 0)),      # left
-    ((-3, -3), (-2, -2), (-1, -1), (0, 0)),   # diag upper left
-    ((-3, 0), (-2, 0), (-1, 0), (0, 0)),      # above
-    ((-3, 3), (-2, 2), (-1, 1), (0, 0)),      # diag upper right
-    ((0, 3), (0, 2), (0, 1), (0, 0)),         # right
-    ((3, 3), (2, 2), (1, 1), (0, 0)),         # diag lower right
-    ((3, 0), (2, 0), (1, 0), (0, 0)),         # below
-    ((3, -3), (2, -2), (1, -1), (0, 0)),      # diag lower left
+    (0, 1, 2, 3),                       # up
+    (0, -1j, -2j, -3j),                 # down
+    (0, -1, -2, -3),                    # left
+    (0, 1j, 2j, 3j),                    # right
+    (0, -1 - 1j, -2 - 2j, -3 - 3j),     # diagonal down and left
+    (0, -1 + 1j, -2 + 2j, -3 + 3j),     # diagonal up and left
+    (0, 1 + 1j, 2 + 2j, 3 + 3j),        # diagonal up and right
+    (0, 1 - 1j, 2 - 2j, 3 - 3j),        # diagonal down and right
 )
 
 grid = {}
-for r, line in enumerate(sys.stdin):
-    for c, char in enumerate(line.strip()):
-        grid[(r, c)] = char
+for a, line in enumerate(sys.stdin):
+    for b, char in enumerate(line.strip()):
+        grid[complex(a, b)] = char
 
 total = 0
-for r, c in grid:
-    for d in DIRECTIONS:
-        word = ''.join(grid.get((d[i][0] + r, d[i][1] + c), '')
-                       for i in range(len(d)))
-        if word == 'XMAS':
+for coord in grid:
+    for direction in DIRECTIONS:
+        if ''.join(grid.get(coord + d, '') for d in direction) == 'XMAS':
             total += 1
 
 print(total)
